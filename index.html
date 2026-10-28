@@ -1,722 +1,103 @@
-<!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TTM PR — The Next Level of Table Tennis in Puerto Rico</title>
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23060a14'/%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%2300e5ff'/%3E%3Cstop offset='100%25' stop-color='%237c4dff'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x='4' y='7' width='11' height='2.5' rx='1' fill='white'/%3E%3Crect x='8' y='7' width='3' height='16' rx='1' fill='white'/%3E%3Crect x='17' y='7' width='11' height='2.5' rx='1' fill='white'/%3E%3Crect x='21' y='7' width='3' height='16' rx='1' fill='white'/%3E%3Crect x='15.5' y='6' width='1.5' height='5' rx='0.75' fill='url(%23g)'/%3E%3Ccircle cx='16.25' cy='5.5' r='1' fill='url(%23g)'/%3E%3C/svg%3E">
-<script src="https://cdn.tailwindcss.com"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Russo+One&family=Barlow+Condensed:wght@300;400;500;600;700;800;900&family=Barlow:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<script>
-tailwind.config = {
-  theme: {
-    extend: {
-      colors: {
-        surface: { 900: '#060a14', 800: '#0b1120', 700: '#0f172a', 600: '#1a2340', 500: '#1e293b' },
-        accent: { cyan: '#00e5ff', purple: '#7c4dff', blue: '#0096ff' },
-        tt: { net: '#00e5ff', glow: 'rgba(0,229,255,0.15)' }
-      },
-      fontFamily: {
-        display: ['Orbitron', 'sans-serif'],
-        heading: ['Barlow Condensed', 'sans-serif'],
-        body: ['Barlow', 'sans-serif'],
-        brand: ['Russo One', 'sans-serif'],
-      }
-    }
-  }
-}
-</script>
-<style>
-  /* === GLOBAL === */
-  html { font-family: 'Barlow', sans-serif; }
-  body { background: #060a14; color: #e2e8f0; overflow-x: hidden; }
-
-  /* === GRAIN OVERLAY === */
-  body::after {
-    content: '';
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 9999;
-    opacity: 0.025;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  }
-
-  /* === SCROLL ANIMATIONS === */
-  .reveal {
-    opacity: 0;
-    transform: translateY(40px);
-    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  .reveal.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  .reveal-delay-1 { transition-delay: 0.1s; }
-  .reveal-delay-2 { transition-delay: 0.2s; }
-  .reveal-delay-3 { transition-delay: 0.3s; }
-  .reveal-delay-4 { transition-delay: 0.4s; }
-
-  /* === HERO ENTRANCE === */
-  @keyframes heroFadeUp {
-    from { opacity: 0; transform: translateY(60px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  @keyframes heroLine {
-    from { width: 0; }
-    to { width: 80px; }
-  }
-  @keyframes heroPulse {
-    0%, 100% { opacity: 0.4; }
-    50% { opacity: 1; }
-  }
-  .hero-animate { animation: heroFadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; }
-  .hero-delay-1 { animation-delay: 0.2s; }
-  .hero-delay-2 { animation-delay: 0.4s; }
-  .hero-delay-3 { animation-delay: 0.6s; }
-  .hero-delay-4 { animation-delay: 0.8s; }
-  .hero-line { animation: heroLine 1s 1s cubic-bezier(0.16, 1, 0.3, 1) forwards; width: 0; }
-  .hero-pulse { animation: heroPulse 2s 1.5s ease-in-out infinite; }
-
-  /* === GLOWING CARD BORDERS === */
-  .glow-card {
-    position: relative;
-    background: linear-gradient(135deg, rgba(11,17,32,0.9), rgba(15,23,42,0.9));
-    border: 1px solid rgba(0,229,255,0.08);
-    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  .glow-card::before {
-    content: '';
-    position: absolute;
-    inset: -1px;
-    border-radius: inherit;
-    padding: 1px;
-    background: linear-gradient(135deg, rgba(0,229,255,0.0), rgba(124,77,255,0.0));
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    transition: all 0.4s ease;
-    pointer-events: none;
-  }
-  .glow-card:hover {
-    border-color: rgba(0,229,255,0.2);
-    transform: translateY(-4px);
-    box-shadow: 0 20px 60px rgba(0,229,255,0.06), 0 0 0 1px rgba(0,229,255,0.1);
-  }
-  .glow-card:hover::before {
-    background: linear-gradient(135deg, rgba(0,229,255,0.3), rgba(124,77,255,0.3));
-  }
-
-  /* === BADGE === */
-  .dev-badge {
-    background: linear-gradient(135deg, rgba(0,229,255,0.12), rgba(124,77,255,0.12));
-    border: 1px solid rgba(0,229,255,0.25);
-    animation: badgePulse 3s ease-in-out infinite;
-  }
-  @keyframes badgePulse {
-    0%, 100% { border-color: rgba(0,229,255,0.25); }
-    50% { border-color: rgba(0,229,255,0.5); }
-  }
-
-  /* === GRADIENT TEXT === */
-  .gradient-text {
-    background: linear-gradient(135deg, #00e5ff 0%, #7c4dff 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  /* === NAV === */
-  .nav-link {
-    position: relative;
-    transition: color 0.3s ease;
-  }
-  .nav-link::after {
-    content: '';
-    position: absolute;
-    bottom: -4px;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background: linear-gradient(90deg, #00e5ff, #7c4dff);
-    transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  .nav-link:hover::after { width: 100%; }
-  .nav-link:hover { color: #00e5ff; }
-
-  /* === HERO GRID BG === */
-  .hero-grid {
-    background-image:
-      linear-gradient(rgba(0,229,255,0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0,229,255,0.03) 1px, transparent 1px);
-    background-size: 60px 60px;
-  }
-
-  /* === CTA BUTTON === */
-  .cta-btn {
-    position: relative;
-    overflow: hidden;
-    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  .cta-btn::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, #00e5ff, #7c4dff);
-    opacity: 0;
-    transition: opacity 0.4s ease;
-  }
-  .cta-btn:hover::before { opacity: 1; }
-  .cta-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 40px rgba(0,229,255,0.2); }
-  .cta-btn span { position: relative; z-index: 1; }
-
-  /* === MOBILE NAV === */
-  .mobile-menu {
-    transform: translateX(100%);
-    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  .mobile-menu.open { transform: translateX(0); }
-
-  /* === SECTION DIVIDER === */
-  .section-accent {
-    width: 50px;
-    height: 3px;
-    background: linear-gradient(90deg, #00e5ff, #7c4dff);
-    border-radius: 2px;
-  }
-
-  /* === FOUNDER CARD GLOW === */
-  .founder-glow {
-    box-shadow: 0 0 80px rgba(0,229,255,0.05), 0 0 160px rgba(124,77,255,0.03);
-  }
-
-  /* === FOOTER SOCIAL ICONS === */
-  .social-icon {
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  .social-icon:hover {
-    color: #00e5ff;
-    transform: translateY(-3px);
-  }
-
-/* === SCROLL INDICATOR === */
-  @keyframes scrollBounce {
-    0%, 100% { transform: translateY(0); opacity: 0.4; }
-    50% { transform: translateY(8px); opacity: 1; }
-  }
-  .scroll-indicator { animation: scrollBounce 2s ease-in-out infinite; }
-
-  /* === STAT COUNTER === */
-  .stat-number {
-    font-variant-numeric: tabular-nums;
-  }
-</style>
-</head>
-<body>
-
-<!-- ===================== NAVBAR ===================== -->
-<nav class="fixed top-0 left-0 right-0 z-50 transition-all duration-500" id="navbar">
-  <div class="max-w-7xl mx-auto px-6 lg:px-8">
-    <div class="flex items-center justify-between h-20">
-
-      <!-- LOGO -->
-      <a href="#" class="flex items-center gap-3 group">
-        <svg viewBox="0 0 480 130" xmlns="http://www.w3.org/2000/svg" class="h-8 w-auto">
-          <defs>
-            <linearGradient id="navAccent" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" style="stop-color:#00e5ff" />
-              <stop offset="100%" style="stop-color:#7c4dff" />
-            </linearGradient>
-          </defs>
-          <rect x="10" y="28" width="80" height="12" rx="2" fill="#ffffff"/>
-          <rect x="39" y="28" width="14" height="90" rx="2" fill="#ffffff"/>
-          <rect x="100" y="28" width="80" height="12" rx="2" fill="#ffffff"/>
-          <rect x="129" y="28" width="14" height="90" rx="2" fill="#ffffff"/>
-          <rect x="93.5" y="22" width="3" height="24" rx="1.5" fill="url(#navAccent)"/>
-          <circle cx="95" cy="21" r="2.5" fill="url(#navAccent)"/>
-          <circle cx="243" cy="16" r="11" fill="#ffffff"/>
-          <path d="M 205,118 L 205,40 Q 205,28 215,28 L 222,28 L 243,85 L 264,28 L 271,28 Q 281,28 281,40 L 281,118 L 266,118 L 266,55 L 248,105 L 238,105 L 220,55 L 220,118 Z" fill="#ffffff"/>
-          <text x="310" y="104" font-family="Orbitron, sans-serif" font-weight="700" font-size="40" fill="url(#navAccent)" letter-spacing="5">PR</text>
-        </svg>
-      </a>
-
-      <!-- DESKTOP NAV -->
-      <div class="hidden md:flex items-center gap-10">
-        <a href="#mission" class="nav-link font-heading text-sm font-500 tracking-[0.2em] uppercase text-gray-400">Mission</a>
-        <a href="#software" class="nav-link font-heading text-sm font-500 tracking-[0.2em] uppercase text-gray-400">Software</a>
-        <a href="#founder" class="nav-link font-heading text-sm font-500 tracking-[0.2em] uppercase text-gray-400">Founder</a>
-        <a href="#contact" class="nav-link font-heading text-sm font-500 tracking-[0.2em] uppercase text-gray-400">Contact</a>
-<a href="#contact" class="cta-btn px-6 py-2.5 rounded border border-accent-cyan/30 font-heading text-xs font-600 tracking-[0.2em] uppercase text-white">
-          <span>Contact Us</span>
-        </a>
-      </div>
-
-      <!-- MOBILE HAMBURGER -->
-      <button class="md:hidden text-white p-2" onclick="toggleMobileMenu()" id="menuBtn">
-        <i class="fa-solid fa-bars text-xl"></i>
-      </button>
-    </div>
-  </div>
-</nav>
-
-<!-- MOBILE MENU -->
-<div class="mobile-menu fixed inset-0 z-40 bg-surface-900/98 backdrop-blur-xl flex flex-col items-center justify-center gap-8" id="mobileMenu">
-  <button class="absolute top-6 right-6 text-white p-2" onclick="toggleMobileMenu()">
-    <i class="fa-solid fa-xmark text-2xl"></i>
-  </button>
-  <a href="#mission" onclick="toggleMobileMenu()" class="font-heading text-2xl font-600 tracking-[0.3em] uppercase text-gray-300 hover:text-accent-cyan transition-colors">Mission</a>
-  <a href="#software" onclick="toggleMobileMenu()" class="font-heading text-2xl font-600 tracking-[0.3em] uppercase text-gray-300 hover:text-accent-cyan transition-colors">Technology</a>
-  <a href="#founder" onclick="toggleMobileMenu()" class="font-heading text-2xl font-600 tracking-[0.3em] uppercase text-gray-300 hover:text-accent-cyan transition-colors">Founder</a>
-  <a href="#contact" onclick="toggleMobileMenu()" class="font-heading text-2xl font-600 tracking-[0.3em] uppercase text-gray-300 hover:text-accent-cyan transition-colors">Contact</a>
-</div>
-
-
-<!-- ===================== HERO ===================== -->
-<section class="relative min-h-screen flex items-center justify-center hero-grid overflow-hidden">
-
-  <!-- Radial glow -->
-  <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full" style="background: radial-gradient(ellipse, rgba(0,229,255,0.06) 0%, rgba(124,77,255,0.03) 40%, transparent 70%);"></div>
-
-  <!-- Corner accents -->
-  <div class="absolute top-20 left-8 w-px h-24 bg-gradient-to-b from-accent-cyan/30 to-transparent"></div>
-  <div class="absolute top-20 left-8 w-24 h-px bg-gradient-to-r from-accent-cyan/30 to-transparent"></div>
-  <div class="absolute bottom-8 right-8 w-px h-24 bg-gradient-to-t from-accent-purple/30 to-transparent"></div>
-  <div class="absolute bottom-8 right-8 w-24 h-px bg-gradient-to-l from-accent-purple/30 to-transparent"></div>
-
-  <div class="relative z-10 text-center px-6 max-w-5xl mx-auto">
-
-    <!-- Eyebrow -->
-    <div class="hero-animate hero-delay-1 flex items-center justify-center gap-3 mb-8">
-      <div class="w-8 h-px bg-accent-cyan/50"></div>
-      <span class="font-heading text-xs font-500 tracking-[0.4em] uppercase text-accent-cyan/70">Puerto Rico</span>
-      <div class="w-8 h-px bg-accent-cyan/50"></div>
-    </div>
-
-    <!-- Main headline -->
-    <h1 class="hero-animate hero-delay-2 font-heading font-900 uppercase leading-[0.9] tracking-tight mb-6">
-      <span class="block text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-white">The Next Level</span>
-      <span class="block text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-white/20 mt-1">of Table Tennis in</span>
-      <span class="block text-5xl sm:text-6xl md:text-7xl lg:text-8xl gradient-text mt-1">Puerto Rico</span>
-    </h1>
-
-    <!-- Accent line -->
-    <div class="flex justify-center my-8">
-      <div class="hero-line h-[2px] bg-gradient-to-r from-accent-cyan to-accent-purple rounded-full"></div>
-    </div>
-
-    <!-- Subheadline -->
-    <p class="hero-animate hero-delay-3 font-body text-lg md:text-xl text-gray-400 max-w-2xl mx-auto leading-relaxed">
-      Professional tournament organization powered by proprietary technology. Elevating competitive table tennis with precision management and digital-first infrastructure.
-    </p>
-
-    <!-- CTA -->
-    <div class="hero-animate hero-delay-4 mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-      <a href="#mission" class="cta-btn px-8 py-3.5 rounded border border-accent-cyan/40 font-heading text-sm font-600 tracking-[0.15em] uppercase text-white">
-        <span>Explore Our Mission</span>
-      </a>
-      <a href="#software" class="px-8 py-3.5 rounded font-heading text-sm font-500 tracking-[0.15em] uppercase text-gray-500 hover:text-accent-cyan transition-colors">
-        View Technology →
-      </a>
-    </div>
-
-    <!-- Scroll indicator -->
-    <div class="absolute bottom-10 left-1/2 -translate-x-1/2 scroll-indicator">
-      <div class="w-6 h-10 rounded-full border border-gray-700 flex items-start justify-center p-1.5">
-        <div class="w-1 h-2.5 rounded-full bg-accent-cyan/60"></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-
-
-
-<!-- ===================== MISSION / ABOUT ===================== -->
-<section id="mission" class="relative py-24 md:py-32">
-  <!-- BG glow -->
-  <div class="absolute top-0 right-0 w-[500px] h-[500px] rounded-full" style="background: radial-gradient(ellipse, rgba(124,77,255,0.04) 0%, transparent 60%);"></div>
-
-  <div class="max-w-7xl mx-auto px-6 lg:px-8">
-
-    <!-- Section header -->
-    <div class="reveal mb-16 md:mb-20">
-      <div class="flex items-center gap-4 mb-4">
-        <div class="section-accent"></div>
-        <span class="font-heading text-xs font-500 tracking-[0.3em] uppercase text-accent-cyan/70">About Us</span>
-      </div>
-      <h2 class="font-heading font-800 text-4xl md:text-5xl lg:text-6xl uppercase tracking-tight text-white">
-        Mission &amp; <span class="gradient-text">Strategy</span>
-      </h2>
-    </div>
-
-    <!-- Cards grid -->
-    <div class="grid md:grid-cols-2 gap-6 lg:gap-8">
-
-      <!-- Mission card -->
-      <div class="reveal glow-card rounded-2xl p-8 md:p-10">
-        <div class="flex items-center gap-3 mb-6">
-          <div class="w-10 h-10 rounded-lg bg-accent-cyan/10 flex items-center justify-center">
-            <i class="fa-solid fa-crosshairs text-accent-cyan text-sm"></i>
-          </div>
-          <h3 class="font-heading font-700 text-xl tracking-wide uppercase text-white">Our Mission</h3>
-        </div>
-        <p class="font-body text-gray-400 leading-relaxed">
-          To revolutionize competitive table tennis in Puerto Rico through professional-grade tournament management, cutting-edge technology integration, and unwavering commitment to ITTF standards — giving every player, league, and event the visibility and operational excellence they deserve.
-        </p>
-      </div>
-
-      <!-- Strategy card -->
-      <div class="reveal reveal-delay-1 glow-card rounded-2xl p-8 md:p-10">
-        <div class="flex items-center gap-3 mb-6">
-          <div class="w-10 h-10 rounded-lg bg-accent-purple/10 flex items-center justify-center">
-            <i class="fa-solid fa-route text-accent-purple text-sm"></i>
-          </div>
-          <h3 class="font-heading font-700 text-xl tracking-wide uppercase text-white">Our Strategy</h3>
-        </div>
-        <p class="font-body text-gray-400 leading-relaxed">
-          Leverage proprietary software and data-driven operations to deliver seamless tournament experiences. From automated seeding and bracket generation to real-time digital results through platforms like StadiumCompete, we bridge the gap between grassroots competition and world-class event production.
-        </p>
-      </div>
-
-      <!-- Vision card -->
-      <div class="reveal reveal-delay-2 glow-card rounded-2xl p-8 md:p-10">
-        <div class="flex items-center gap-3 mb-6">
-          <div class="w-10 h-10 rounded-lg bg-accent-cyan/10 flex items-center justify-center">
-            <i class="fa-solid fa-eye text-accent-cyan text-sm"></i>
-          </div>
-          <h3 class="font-heading font-700 text-xl tracking-wide uppercase text-white">Our Vision</h3>
-        </div>
-        <p class="font-body text-gray-400 leading-relaxed">
-          Position Puerto Rico as a premier destination for competitive table tennis in the Caribbean — building a sustainable ecosystem where players develop, sponsors engage, and the sport grows through technology-enhanced transparency and professionalism.
-        </p>
-      </div>
-
-      <!-- Values card -->
-      <div class="reveal reveal-delay-3 glow-card rounded-2xl p-8 md:p-10">
-        <div class="flex items-center gap-3 mb-6">
-          <div class="w-10 h-10 rounded-lg bg-accent-purple/10 flex items-center justify-center">
-            <i class="fa-solid fa-diamond text-accent-purple text-sm"></i>
-          </div>
-          <h3 class="font-heading font-700 text-xl tracking-wide uppercase text-white">Our Values</h3>
-        </div>
-        <ul class="font-body text-gray-400 leading-relaxed space-y-2">
-          <li class="flex items-start gap-2"><span class="text-accent-cyan mt-1.5 text-[8px]">◆</span> Operational excellence under international standards</li>
-          <li class="flex items-start gap-2"><span class="text-accent-cyan mt-1.5 text-[8px]">◆</span> Technology as a competitive advantage, not a gimmick</li>
-          <li class="flex items-start gap-2"><span class="text-accent-cyan mt-1.5 text-[8px]">◆</span> Player-first experiences at every touchpoint</li>
-          <li class="flex items-start gap-2"><span class="text-accent-cyan mt-1.5 text-[8px]">◆</span> Transparent, data-driven decision making</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-<!-- ===================== SOFTWARE ===================== -->
-<section id="software" class="relative py-24 md:py-32 border-t border-white/[0.04]">
-  <!-- BG glow -->
-  <div class="absolute bottom-0 left-0 w-[600px] h-[600px] rounded-full" style="background: radial-gradient(ellipse, rgba(0,229,255,0.04) 0%, transparent 60%);"></div>
-
-  <div class="max-w-7xl mx-auto px-6 lg:px-8">
-
-    <!-- Section header -->
-    <div class="reveal mb-16 md:mb-20">
-      <div class="flex items-center gap-4 mb-4">
-        <div class="section-accent"></div>
-        <span class="font-heading text-xs font-500 tracking-[0.3em] uppercase text-accent-cyan/70">Technology</span>
-      </div>
-      <h2 class="font-heading font-800 text-4xl md:text-5xl lg:text-6xl uppercase tracking-tight text-white">
-        Software &amp; <span class="gradient-text">Technology</span>
-      </h2>
-      <p class="font-body text-gray-500 text-lg mt-4 max-w-2xl">
-        A combination of proprietary tools and best-in-class third-party platforms powering professional table tennis operations.
-      </p>
-    </div>
-
-    <!-- Software cards -->
-    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-
-      <!-- Kileaaa -->
-      <div class="reveal glow-card rounded-2xl p-8 md:p-10 lg:col-span-2">
-        <div class="flex items-start justify-between mb-6">
-          <div class="flex items-center gap-3">
-            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-accent-cyan/20 to-accent-purple/20 flex items-center justify-center border border-accent-cyan/10">
-              <i class="fa-solid fa-code text-accent-cyan"></i>
-            </div>
-            <div>
-              <h3 class="font-display text-lg font-700 tracking-wider text-white">KILEAAA</h3>
-              <p class="font-body text-xs text-gray-500">Proprietary Platform — Built In-House</p>
-            </div>
-          </div>
-          <span class="dev-badge px-3 py-1 rounded-full font-heading text-[10px] font-600 tracking-[0.15em] uppercase text-accent-cyan">In Development</span>
-        </div>
-        <p class="font-body text-gray-400 leading-relaxed mb-6">
-          Our only proprietary software — a comprehensive tournament and league management platform purpose-built for table tennis by TTM PR. From player registration and seeding algorithms to live scoring and result publication, Kileaaa is designed to handle every operational layer of competitive play under one roof.
-        </p>
-        <div class="grid grid-cols-2 gap-3">
-          <div class="bg-white/[0.02] rounded-lg px-4 py-3 border border-white/[0.04]">
-            <span class="font-heading text-[10px] tracking-[0.2em] uppercase text-gray-500">Feature</span>
-            <p class="font-body text-sm text-gray-300 mt-1">Automated Bracket Generation</p>
-          </div>
-          <div class="bg-white/[0.02] rounded-lg px-4 py-3 border border-white/[0.04]">
-            <span class="font-heading text-[10px] tracking-[0.2em] uppercase text-gray-500">Feature</span>
-            <p class="font-body text-sm text-gray-300 mt-1">Real-Time Score Tracking</p>
-          </div>
-          <div class="bg-white/[0.02] rounded-lg px-4 py-3 border border-white/[0.04]">
-            <span class="font-heading text-[10px] tracking-[0.2em] uppercase text-gray-500">Feature</span>
-            <p class="font-body text-sm text-gray-300 mt-1">Player Profiles &amp; Rankings</p>
-          </div>
-          <div class="bg-white/[0.02] rounded-lg px-4 py-3 border border-white/[0.04]">
-            <span class="font-heading text-[10px] tracking-[0.2em] uppercase text-gray-500">Feature</span>
-            <p class="font-body text-sm text-gray-300 mt-1">Sponsorship Integration</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Fogueo -->
-      <div class="reveal reveal-delay-1 glow-card rounded-2xl p-8 md:p-10">
-        <div class="flex items-start justify-between mb-6 flex-wrap gap-2">
-          <div class="flex items-center gap-3">
-            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-orange-500/20 to-red-500/20 flex items-center justify-center border border-orange-500/10">
-              <i class="fa-solid fa-fire text-orange-400"></i>
-            </div>
-            <div>
-              <h3 class="font-display text-base font-700 tracking-wider text-white">FOGUEO</h3>
-              <p class="font-body text-xs text-gray-500">Full Table Tennis League</p>
-            </div>
-          </div>
-          <span class="dev-badge px-3 py-1 rounded-full font-heading text-[10px] font-600 tracking-[0.15em] uppercase text-accent-cyan">Active</span>
-        </div>
-        <p class="font-body text-gray-400 leading-relaxed mb-6">
-          Our proprietary league format that brings consistent, structured competitive play to Puerto Rico's table tennis community. Powered by TTM PR's operational backbone and digital infrastructure.
-        </p>
-        <div class="bg-white/[0.02] rounded-lg px-4 py-3 border border-white/[0.04]">
-          <span class="font-heading text-[10px] tracking-[0.2em] uppercase text-gray-500">Status</span>
-          <p class="font-body text-sm text-gray-300 mt-1">Season operations active</p>
-        </div>
-      </div>
-
-      <!-- Third-Party Platforms -->
-      <div class="reveal reveal-delay-2 glow-card rounded-2xl p-8 md:p-10">
-        <div class="flex items-start justify-between mb-6 flex-wrap gap-2">
-          <div class="flex items-center gap-3">
-            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-accent-cyan/20 to-blue-500/20 flex items-center justify-center border border-accent-cyan/10">
-              <i class="fa-solid fa-cubes text-accent-blue"></i>
-            </div>
-            <div>
-              <h3 class="font-heading text-base font-700 tracking-wider uppercase text-white">Third-Party Tools</h3>
-              <p class="font-body text-xs text-gray-500">External Platforms We Use</p>
-            </div>
-          </div>
-          <span class="dev-badge px-3 py-1 rounded-full font-heading text-[10px] font-600 tracking-[0.15em] uppercase text-accent-cyan">Active</span>
-        </div>
-        <p class="font-body text-gray-400 leading-relaxed">
-          We leverage best-in-class third-party software to complement our proprietary tools — including platforms for event coordination, bracket management, communications, and design — selecting the right tool for each operational need.
-        </p>
-      </div>
-
-      <!-- StadiumCompete Integration -->
-      <div class="reveal reveal-delay-3 glow-card rounded-2xl p-8 md:p-10 lg:col-span-2">
-        <div class="flex items-start justify-between mb-6 flex-wrap gap-2">
-          <div class="flex items-center gap-3">
-            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-green-500/20 to-emerald-500/20 flex items-center justify-center border border-green-500/10">
-              <i class="fa-solid fa-plug text-green-400"></i>
-            </div>
-            <div>
-              <h3 class="font-heading text-base font-700 tracking-wider uppercase text-white">Platform Integrations</h3>
-              <p class="font-body text-xs text-gray-500">StadiumCompete &amp; Beyond</p>
-            </div>
-          </div>
-          <span class="dev-badge px-3 py-1 rounded-full font-heading text-[10px] font-600 tracking-[0.15em] uppercase text-accent-cyan">Live</span>
-        </div>
-        <p class="font-body text-gray-400 leading-relaxed">
-          Digital result publication through StadiumCompete, providing real-time access to match results, standings, and player statistics. Our integration layer ensures that every match played under TTM PR management is immediately accessible to players, coaches, and fans.
-        </p>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-<!-- ===================== FOUNDER ===================== -->
-<section id="founder" class="relative py-24 md:py-32 border-t border-white/[0.04]">
-  <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full" style="background: radial-gradient(ellipse, rgba(0,229,255,0.03) 0%, transparent 60%);"></div>
-
-  <div class="max-w-7xl mx-auto px-6 lg:px-8">
-
-    <!-- Section header -->
-    <div class="reveal mb-16 md:mb-20">
-      <div class="flex items-center gap-4 mb-4">
-        <div class="section-accent"></div>
-        <span class="font-heading text-xs font-500 tracking-[0.3em] uppercase text-accent-cyan/70">Leadership</span>
-      </div>
-      <h2 class="font-heading font-800 text-4xl md:text-5xl lg:text-6xl uppercase tracking-tight text-white">
-        The <span class="gradient-text">Founder</span>
-      </h2>
-    </div>
-
-    <!-- Founder card -->
-    <div class="reveal max-w-3xl">
-      <div class="glow-card founder-glow rounded-2xl p-8 md:p-12">
-        <div class="flex flex-col sm:flex-row items-start gap-8">
-
-          <!-- Founder photo -->
-          <div class="flex-shrink-0">
-            <div class="w-28 h-28 rounded-2xl border border-white/[0.06] overflow-hidden relative" style="background: linear-gradient(135deg, rgba(0,229,255,0.15), rgba(124,77,255,0.15));">
-              <img src="images/joel-vega.jpg" alt="Joel Vega" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
-              <div class="absolute inset-0 items-center justify-center" style="display:none;">
-                <span class="font-heading font-800 text-3xl tracking-wider text-white/80">JV</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Bio -->
-          <div class="flex-1">
-            <div class="flex items-center gap-3 mb-1">
-              <h3 class="font-heading font-800 text-2xl uppercase tracking-wide text-white">Joel Vega</h3>
-              <span class="dev-badge px-2.5 py-0.5 rounded-full font-heading text-[9px] font-600 tracking-[0.15em] uppercase text-accent-cyan">Founder</span>
-            </div>
-            <p class="font-heading text-sm tracking-wider uppercase text-accent-cyan/70 mb-4">Technical Director &amp; Table Tennis Enthusiast</p>
-
-            <p class="font-body text-gray-400 leading-relaxed mb-4">
-              Table tennis enthusiast with over 15 years of experience in the sport. Since 2026, Joel serves as Technical Director of the Federación Puertorriqueña de Tenis de Mesa (FPRTM) and Technical Director of the Liga Atlética Interuniversitaria (LAI) table tennis program.
-            </p>
-            <p class="font-body text-gray-400 leading-relaxed">
-              Professionally, Joel is an Executive Recruiter with an MBA and over 8 years of experience helping organizations — from startups to Fortune 500 companies — scale their personnel operations. He brings that same strategic and operational mindset to the world of competitive table tennis management.
-            </p>
-
-            <!-- Tags -->
-            <div class="flex flex-wrap gap-2 mt-6">
-              <span class="px-3 py-1 rounded-full bg-white/[0.03] border border-white/[0.06] font-heading text-[10px] tracking-[0.15em] uppercase text-gray-500">FPRTM Technical Director</span>
-              <span class="px-3 py-1 rounded-full bg-white/[0.03] border border-white/[0.06] font-heading text-[10px] tracking-[0.15em] uppercase text-gray-500">LAI Technical Director</span>
-              <span class="px-3 py-1 rounded-full bg-white/[0.03] border border-white/[0.06] font-heading text-[10px] tracking-[0.15em] uppercase text-gray-500">MBA</span>
-              <span class="px-3 py-1 rounded-full bg-white/[0.03] border border-white/[0.06] font-heading text-[10px] tracking-[0.15em] uppercase text-gray-500">Executive Recruiter</span>
-              <span class="px-3 py-1 rounded-full bg-white/[0.03] border border-white/[0.06] font-heading text-[10px] tracking-[0.15em] uppercase text-gray-500">15+ Years in TT</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-<!-- ===================== CONTACT / FOOTER ===================== -->
-<footer id="contact" class="relative border-t border-white/[0.04]">
-
-  <!-- Main footer content -->
-  <div class="max-w-7xl mx-auto px-6 lg:px-8 py-20 md:py-24">
-    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
-
-      <!-- Brand column -->
-      <div class="lg:col-span-2">
-        <svg viewBox="0 0 480 130" xmlns="http://www.w3.org/2000/svg" class="h-7 w-auto mb-6">
-          <defs>
-            <linearGradient id="ftAccent" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" style="stop-color:#00e5ff" />
-              <stop offset="100%" style="stop-color:#7c4dff" />
-            </linearGradient>
-          </defs>
-          <rect x="10" y="28" width="80" height="12" rx="2" fill="#ffffff"/>
-          <rect x="39" y="28" width="14" height="90" rx="2" fill="#ffffff"/>
-          <rect x="100" y="28" width="80" height="12" rx="2" fill="#ffffff"/>
-          <rect x="129" y="28" width="14" height="90" rx="2" fill="#ffffff"/>
-          <rect x="93.5" y="22" width="3" height="24" rx="1.5" fill="url(#ftAccent)"/>
-          <circle cx="95" cy="21" r="2.5" fill="url(#ftAccent)"/>
-          <circle cx="243" cy="16" r="11" fill="#ffffff"/>
-          <path d="M 205,118 L 205,40 Q 205,28 215,28 L 222,28 L 243,85 L 264,28 L 271,28 Q 281,28 281,40 L 281,118 L 266,118 L 266,55 L 248,105 L 238,105 L 220,55 L 220,118 Z" fill="#ffffff"/>
-          <text x="310" y="104" font-family="Orbitron, sans-serif" font-weight="700" font-size="40" fill="url(#ftAccent)" letter-spacing="5">PR</text>
-        </svg>
-        <p class="font-body text-gray-500 leading-relaxed max-w-md">
-          Tournament &amp; Technology Management. Elevating competitive table tennis in Puerto Rico through professional operations and proprietary technology.
-        </p>
-
-        <!-- Social -->
-        <div class="flex items-center gap-5 mt-8">
-          <a href="#" class="social-icon text-gray-600 text-lg"><i class="fa-brands fa-x-twitter"></i></a>
-          <a href="#" class="social-icon text-gray-600 text-lg"><i class="fa-brands fa-instagram"></i></a>
-          <a href="#" class="social-icon text-gray-600 text-lg"><i class="fa-brands fa-discord"></i></a>
-          <a href="#" class="social-icon text-gray-600 text-lg"><i class="fa-brands fa-facebook"></i></a>
-          <a href="#" class="social-icon text-gray-600 text-lg"><i class="fa-brands fa-youtube"></i></a>
-        </div>
-      </div>
-
-      <!-- Contact -->
-      <div>
-        <h4 class="font-heading text-xs font-600 tracking-[0.3em] uppercase text-gray-400 mb-6">Contact</h4>
-        <div class="space-y-4">
-          <a href="mailto:joel@ttmpr.xyz" class="flex items-center gap-3 group">
-            <i class="fa-solid fa-envelope text-xs text-gray-600 group-hover:text-accent-cyan transition-colors"></i>
-            <span class="font-body text-sm text-gray-500 group-hover:text-gray-300 transition-colors">joel@ttmpr.xyz</span>
-          </a>
-          <a href="tel:+17872483994" class="flex items-center gap-3 group">
-            <i class="fa-solid fa-phone text-xs text-gray-600 group-hover:text-accent-cyan transition-colors"></i>
-            <span class="font-body text-sm text-gray-500 group-hover:text-gray-300 transition-colors">(787) 248-3994</span>
-          </a>
-          <div class="flex items-center gap-3">
-            <i class="fa-solid fa-location-dot text-xs text-gray-600"></i>
-            <span class="font-body text-sm text-gray-500">Puerto Rico</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Quick links -->
-      <div>
-        <h4 class="font-heading text-xs font-600 tracking-[0.3em] uppercase text-gray-400 mb-6">Navigate</h4>
-        <div class="space-y-3">
-          <a href="#mission" class="block font-body text-sm text-gray-500 hover:text-accent-cyan transition-colors">Mission</a>
-          <a href="#software" class="block font-body text-sm text-gray-500 hover:text-accent-cyan transition-colors">Software</a>
-          <a href="#founder" class="block font-body text-sm text-gray-500 hover:text-accent-cyan transition-colors">Founder</a>
-          <a href="#contact" class="block font-body text-sm text-gray-500 hover:text-accent-cyan transition-colors">Contact</a>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Bottom bar -->
-  <div class="border-t border-white/[0.04]">
-    <div class="max-w-7xl mx-auto px-6 lg:px-8 py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-      <p class="font-body text-xs text-gray-600">&copy; 2026 TTM PR. All rights reserved.</p>
-      <p class="font-body text-xs text-gray-700">Tournament &amp; Technology Management — Puerto Rico</p>
-    </div>
-  </div>
-</footer>
-
-
-<!-- ===================== SCRIPTS ===================== -->
-<script>
-// ===================== SCROLL REVEAL =====================
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('visible');
-    }
-  });
-}, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
-
-document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-// ===================== NAVBAR SCROLL =====================
-const navbar = document.getElementById('navbar');
-window.addEventListener('scroll', () => {
-  if (window.scrollY > 80) {
-    navbar.style.background = 'rgba(6,10,20,0.85)';
-    navbar.style.backdropFilter = 'blur(20px)';
-    navbar.style.borderBottom = '1px solid rgba(255,255,255,0.04)';
-  } else {
-    navbar.style.background = 'transparent';
-    navbar.style.backdropFilter = 'none';
-    navbar.style.borderBottom = 'none';
-  }
-});
-
-// ===================== MOBILE MENU =====================
-function toggleMobileMenu() {
-  document.getElementById('mobileMenu').classList.toggle('open');
-}
-</script>
-
-</body>
-</html>
+<!DOCTYPE html><html lang="es-PR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+ <meta name="theme-color" content="#080e18"><meta name="description" content="TTMPR: digitalización, gestión deportiva y dirección técnica del tenis de mesa en Puerto Rico, fundado y dirigido por Joel Vega.">
+ <meta name="robots" content="index,follow,max-image-preview:large"><link rel="canonical" href="https://ttmpr.xyz/">
+ <meta property="og:type" content="website"><meta property="og:site_name" content="TTMPR"><meta property="og:locale" content="es_PR"><meta property="og:locale:alternate" content="en_US">
+ <meta property="og:title" content="TTMPR · Más allá del juego"><meta property="og:description" content="TTMPR: digitalización, gestión deportiva y dirección técnica del tenis de mesa en Puerto Rico, fundado y dirigido por Joel Vega."><meta property="og:url" content="https://ttmpr.xyz/">
+ <meta property="og:image" content="https://ttmpr.xyz/assets/compartir/inicio.jpg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="TTMPR · Más allá del juego">
+ <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="TTMPR · Más allá del juego"><meta name="twitter:description" content="TTMPR: digitalización, gestión deportiva y dirección técnica del tenis de mesa en Puerto Rico, fundado y dirigido por Joel Vega."><meta name="twitter:image" content="https://ttmpr.xyz/assets/compartir/inicio.jpg">
+ <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Organization", "name": "TTMPR", "alternateName": "Tournaments & Technology Management Puerto Rico", "url": "https://ttmpr.xyz/", "logo": "https://ttmpr.xyz/assets/ttmpr-logo.png", "email": "joel@ttmpr.xyz", "telephone": "+1-787-248-3994", "areaServed": "Puerto Rico", "founder": {"@type": "Person", "name": "Joel Vega", "jobTitle": "Fundador y Director Técnico"}}</script><title>TTMPR · Más allá del juego</title><link rel="icon" type="image/svg+xml" href="assets/favicon.svg"><link rel="icon" type="image/png" sizes="32x32" href="assets/favicon.png"><link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+ <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+ <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&amp;family=Sora:wght@400;500;600;700;800&amp;display=swap" media="print" onload="this.media='all'"><link rel="stylesheet" href="assets/site.css"></head>
+ <body data-page="inicio" data-mode="site"><a class="skip-link" href="#mainContent" style="position:absolute;z-index:999;left:-9999px;top:0;background:white;color:black;padding:12px" onfocus="this.style.left='0'" onblur="this.style.left='-9999px'">Saltar al contenido</a>
+ <header class="site-header" id="siteHeader"><div class="container nav-shell">
+  <a class="brand-link" data-route-key="inicio" href="./" aria-label="TTMPR, inicio"><img src="assets/ttmpr-logo.png" alt="TTMPR — Tenis de Mesa Puerto Rico" width="146" height="46"></a>
+  <nav class="nav-links" id="primaryNav" aria-label="Navegación principal"><a data-route-key="inicio" href="./"><span class="i18n " data-es="Inicio" data-en="Home">Inicio</span></a><a data-route-key="federacion" href="federacion/"><span class="i18n " data-es="Federación" data-en="Federation">Federación</span></a><a data-route-key="digitalizacion" href="digitalizacion/"><span class="i18n " data-es="Digitalización" data-en="Digital systems">Digitalización</span></a><a data-route-key="lai" href="lai/"><span class="i18n " data-es="LAI" data-en="LAI">LAI</span></a><a data-route-key="kileaaa" href="kileaaa/"><span class="i18n " data-es="Kileaaa" data-en="Kileaaa">Kileaaa</span></a><a data-route-key="futuro" href="futuro/"><span class="i18n " data-es="Futuro" data-en="Future">Futuro</span></a></nav>
+  <div class="nav-actions"><button class="lang-switch" type="button" id="language" aria-label="Switch to English">EN</button><button class="menu-button" type="button" id="mobileMenu" aria-controls="primaryNav" aria-expanded="false" aria-label="Abrir navegación">☰</button></div>
+ </div><div class="scroll-progress" id="scrollProgress"></div></header><main id="mainContent"><section class="hero hero-home photo-hero" id="inicio"><div aria-hidden="true" class="hero-photo-bg"><img alt="" fetchpriority="high" src="assets/fotografias/coliseo-competencia.webp"/></div><div class="container hero-grid photo-layout"><div class="reveal visible">
+<div class="eyebrow"><span class="i18n" data-en="TABLE TENNIS PUERTO RICO" data-es="TENIS DE MESA PUERTO RICO">TENIS DE MESA PUERTO RICO</span></div>
+<h1 class="hero-title" data-page-heading=""><span class="i18n" data-en="Beyond" data-es="Más allá">Más allá</span><span class="i18n gradient-text" data-en="the game." data-es="del juego.">del juego.</span></h1>
+<p class="i18n hero-lead" data-en="We digitize processes, connect information, and transform how table tennis is managed. A vision bringing together technology, technical leadership, and hands-on competition experience." data-es="Digitalizamos procesos, conectamos información y transformamos la gestión del tenis de mesa. Una visión que une tecnología, dirección técnica y experiencia real en competencia.">Digitalizamos procesos, conectamos información y transformamos la gestión del tenis de mesa. Una visión que une tecnología, dirección técnica y experiencia real en competencia.</p>
+<div class="hero-actions"><a class="button primary" href="#proyectos"><span class="i18n" data-en="Explore our work" data-es="Explorar nuestro trabajo">Explorar nuestro trabajo</span> <span aria-hidden="true" class="arrow">↗</span></a><a class="button outline" href="#mision"><span class="i18n" data-en="Our vision" data-es="Nuestra visión">Nuestra visión</span> <span aria-hidden="true" class="arrow">↗</span></a></div>
+<p class="hero-note"><span class="i18n" data-en="Founded and led by" data-es="Fundado y dirigido por">Fundado y dirigido por</span> <strong>Joel Vega</strong></p></div>
+<aside class="hero-photo-caption reveal visible"><span class="photo-cap-index">01 / TTMPR</span><strong class="i18n" data-en="The sport happens at the table. Transformation begins behind it." data-es="El deporte ocurre en la mesa. La transformación comienza detrás de ella.">El deporte ocurre en la mesa. La transformación comienza detrás de ella.</strong><small class="i18n" data-en="Real competition · digital systems · technical direction" data-es="Competencia real · gestión digital · dirección técnica">Competencia real · gestión digital · dirección técnica</small></aside></div><div class="container hero-btm-line"><span class="scroll-indicator"><span class="i18n" data-en="Scroll to explore" data-es="Explora hacia abajo">Explora hacia abajo</span></span><span class="signal"><span class="signal-dot"></span><span class="i18n" data-en="An evolving platform" data-es="Plataforma en evolución">Plataforma en evolución</span></span></div></section>
+<section class="section alt" id="vision"><div class="container"><div class="section-meta">
+<div class="reveal from-left"><div class="eyebrow"><span class="i18n" data-en="OUR FOUNDATION" data-es="NUESTRO FUNDAMENTO">NUESTRO FUNDAMENTO</span></div><h2 class="i18n section-heading" data-en="Digitization is not one part of TTMPR. It is where everything begins." data-es="La digitalización no es una parte de TTMPR. Es su punto de partida.">La digitalización no es una parte de TTMPR. Es su punto de partida.</h2></div>
+<p class="i18n intro reveal from-right" data-en="Every tournament produces processes, decisions, and information. We turn those real needs into tools, workflows, and experiences that help organize the sport." data-es="Cada torneo genera procesos, decisiones e información. Convertimos esas necesidades reales en herramientas, flujos de trabajo y experiencias que ayudan a organizar mejor el deporte.">Cada torneo genera procesos, decisiones e información. Convertimos esas necesidades reales en herramientas, flujos de trabajo y experiencias que ayudan a organizar mejor el deporte.</p>
+</div><div class="feature-strip reveal"><div><span class="pill-index">01 /</span><strong class="i18n" data-en="Connected information" data-es="Información conectada">Información conectada</strong><p class="i18n" data-en="Ratings, records, profiles, and data designed for continuity." data-es="Ratings, récords, perfiles y datos deportivos con continuidad.">Ratings, récords, perfiles y datos deportivos con continuidad.</p></div>
+<div><span class="pill-index">02 /</span><strong class="i18n" data-en="Technical operations" data-es="Operación técnica">Operación técnica</strong><p class="i18n" data-en="Technical desks, officials coordination, and event operations." data-es="Mesas técnicas, coordinación arbitral y gestión de competencias.">Mesas técnicas, coordinación arbitral y gestión de competencias.</p></div>
+<div><span class="pill-index">03 /</span><strong class="i18n" data-en="Digital experience" data-es="Experiencia digital">Experiencia digital</strong><p class="i18n" data-en="Fewer disconnected processes and a better journey for athletes and organizers." data-es="Menos procesos aislados y mejores caminos para atletas y organizadores.">Menos procesos aislados y mejores caminos para atletas y organizadores.</p></div></div></div></section>
+<section class="section real-essay"><div class="container real-essay-grid">
+<div class="reveal from-left"><div class="eyebrow"><span class="i18n" data-en="THE WORK IN ACTION" data-es="EL TRABAJO EN ACCIÓN">EL TRABAJO EN ACCIÓN</span></div>
+<h2 class="i18n" data-en="From planning to every table." data-es="De la planificación a cada mesa.">De la planificación a cada mesa.</h2>
+<p class="i18n" data-en="Behind every competition day are coordination, records, technical staff, and decisions that technology can make better." data-es="Detrás de una jornada de competencia hay coordinación, documentación, personal técnico y decisiones que también pueden mejorarse con tecnología.">Detrás de una jornada de competencia hay coordinación, documentación, personal técnico y decisiones que también pueden mejorarse con tecnología.</p></div>
+<div class="real-essay-mosaic single-image reveal from-right"><figure><img alt="Instalación deportiva con varias mesas de tenis de mesa y actividad competitiva" loading="lazy" src="assets/fotografias/torneo-multiples-mesas.webp"/><figcaption class="i18n" data-en="COMPETITION" data-es="COMPETENCIA">COMPETENCIA</figcaption></figure></div>
+</div></section><section class="section pale" id="proyectos"><div class="container">
+<div class="reveal"><div class="eyebrow dark"><span class="i18n" data-en="OUR WORK" data-es="ÁREAS DE TRABAJO">ÁREAS DE TRABAJO</span></div>
+<h2 class="i18n section-heading" data-en="The work behind the sport." data-es="El trabajo detrás del deporte.">El trabajo detrás del deporte.</h2>
+<p class="i18n intro" data-en="One vision serving different needs: federation operations, tournaments, university competition, and emerging sports platforms." data-es="Una misma visión aplicada a necesidades distintas: federación, torneos, liga universitaria y nuevas plataformas deportivas.">Una misma visión aplicada a necesidades distintas: federación, torneos, liga universitaria y nuevas plataformas deportivas.</p></div>
+<div class="project-grid"><a aria-label="Federación Puertorriqueña de Tenis de Mesa" class="project-card wide reveal photo-project-card" href="federacion/"><span class="project-num">01 / TTMPR</span><div aria-hidden="true" class="project-thumb"><img alt="" loading="lazy" src="assets/fotografias/torneo-multiples-mesas.webp"/></div>
+<h3 class="i18n" data-en="Puerto Rico Table Tennis Federation" data-es="Federación Puertorriqueña de Tenis de Mesa">Federación Puertorriqueña de Tenis de Mesa</h3><p class="i18n" data-en="Joel Vega’s technical direction at the FPTM: competitions, technical desk, officiating, seeding, ratings, memberships, and communications." data-es="La dirección técnica de Joel Vega en la FPTM: competencias, mesa técnica, arbitraje, siembra, ratings, membresías y comunicación.">La dirección técnica de Joel Vega en la FPTM: competencias, mesa técnica, arbitraje, siembra, ratings, membresías y comunicación.</p>
+<span class="project-link"><span class="i18n" data-en="Explore" data-es="Conocer más">Conocer más</span> <span aria-hidden="true" class="arrow">↗</span></span></a><a aria-label="Digitalización de los torneos" class="project-card reveal" href="digitalizacion/"><span class="project-num">02 / TTMPR</span>
+<h3 class="i18n" data-en="Tournament digitalization" data-es="Digitalización de los torneos">Digitalización de los torneos</h3><p class="i18n" data-en="The foundation of everything: classification systems, records, data, and tools that connect sports operations." data-es="El centro de todo: sistemas de clasificación, registros, datos y herramientas que conectan la operación deportiva.">El centro de todo: sistemas de clasificación, registros, datos y herramientas que conectan la operación deportiva.</p>
+<span class="project-link"><span class="i18n" data-en="Explore" data-es="Conocer más">Conocer más</span> <span aria-hidden="true" class="arrow">↗</span></span></a><a aria-label="Liga Atlética Interuniversitaria" class="project-card reveal" href="lai/"><span class="project-num">03 / TTMPR</span>
+<h3 class="i18n" data-en="Intercollegiate Athletic League" data-es="Liga Atlética Interuniversitaria">Liga Atlética Interuniversitaria</h3><p class="i18n" data-en="Technical direction, competition operations, results, live statistics, and original LAI sports reporting." data-es="Dirección técnica, mesa técnica, árbitros, resultados, estadísticas y crónicas periodísticas de la temporada LAI.">Dirección técnica, mesa técnica, árbitros, resultados, estadísticas y crónicas periodísticas de la temporada LAI.</p>
+<span class="project-link"><span class="i18n" data-en="Explore" data-es="Conocer más">Conocer más</span> <span aria-hidden="true" class="arrow">↗</span></span></a><a aria-label="Kileaaa" class="project-card kileaaa-card reveal" href="kileaaa/"><span class="project-num">04 / TTMPR</span><img alt="Kileaaa" class="logo-inline" loading="lazy" src="assets/kileaaa-logo-dark.png"/>
+<h3 class="i18n" data-en="Kileaaa" data-es="Kileaaa">Kileaaa</h3><p class="i18n" data-en="The tournament and league platform in development: registration, brackets, live scoring, profiles, and ratings in one place." data-es="La plataforma de torneos y ligas en desarrollo: inscripciones, cuadros, marcador en vivo, perfiles y ratings en un mismo lugar.">La plataforma de torneos y ligas en desarrollo: inscripciones, cuadros, marcador en vivo, perfiles y ratings en un mismo lugar.</p>
+<span class="project-link"><span class="i18n" data-en="Explore the product" data-es="Conocer el producto">Conocer el producto</span> <span aria-hidden="true" class="arrow">↗</span></span></a><a aria-label="Futuros proyectos" class="project-card future-card reveal" href="futuro/"><span class="project-num">05 / TTMPR</span>
+<h3 class="i18n" data-en="Future projects" data-es="Futuros proyectos">Futuros proyectos</h3><p class="i18n" data-en="Ideas and future developments, including TTMPR Live as a concept rather than an existing service." data-es="Ideas y próximos desarrollos, incluido TTMPR Live como concepto futuro, no como servicio existente.">Ideas y próximos desarrollos, incluido TTMPR Live como concepto futuro, no como servicio existente.</p>
+<span class="project-link"><span class="i18n" data-en="Explore vision" data-es="Explorar visión">Explorar visión</span> <span aria-hidden="true" class="arrow">↗</span></span></a></div></div></section>
+<section class="section mission-section" id="mision"><div class="container">
+<div class="mission-head reveal"><div class="eyebrow"><span class="i18n" data-en="MISSION · VISION · VALUES" data-es="MISIÓN · VISIÓN · VALORES">MISIÓN · VISIÓN · VALORES</span></div>
+<h2 class="i18n section-heading" data-en="From the competition floor to the digital platform." data-es="Desde la mesa de competencia hacia la plataforma digital.">Desde la mesa de competencia hacia la plataforma digital.</h2>
+<p class="i18n intro" data-en="TTMPR (Tournaments &amp; Technology Management Puerto Rico) understands the sport first, then designs better solutions for it." data-es="TTMPR (Tournaments &amp; Technology Management Puerto Rico) entiende primero el deporte y, después, diseña mejores soluciones para él.">TTMPR (Tournaments &amp; Technology Management Puerto Rico) entiende primero el deporte y, después, diseña mejores soluciones para él.</p></div>
+<div class="mission-grid"><article class="mission-card reveal from-left"><span class="mission-label i18n" data-en="Mission" data-es="Misión">Misión</span><p class="i18n" data-en="Modernize competitive table tennis in Puerto Rico through professional tournament management, proprietary technology, and adherence to ITTF standards, bringing greater visibility and operational quality to players, leagues, and events." data-es="Modernizar el tenis de mesa competitivo en Puerto Rico con gestión profesional de torneos, tecnología propia y apego a los estándares de la ITTF, para dar más visibilidad y calidad operativa a jugadores, ligas y eventos.">Modernizar el tenis de mesa competitivo en Puerto Rico con gestión profesional de torneos, tecnología propia y apego a los estándares de la ITTF, para dar más visibilidad y calidad operativa a jugadores, ligas y eventos.</p></article>
+<article class="mission-card vision reveal from-right"><span class="mission-label i18n" data-en="Vision" data-es="Visión">Visión</span><p class="i18n" data-en="Make Puerto Rico a leading Caribbean destination for competitive table tennis, with sustainable player development, sponsor engagement, and growth built on transparency." data-es="Hacer de Puerto Rico un destino líder del tenis de mesa competitivo en el Caribe, con desarrollo sostenible de jugadores, participación de patrocinadores y un crecimiento basado en la transparencia.">Hacer de Puerto Rico un destino líder del tenis de mesa competitivo en el Caribe, con desarrollo sostenible de jugadores, participación de patrocinadores y un crecimiento basado en la transparencia.</p></article></div>
+<div class="values-list reveal"><div class="values-title i18n" data-en="Our values" data-es="Nuestros valores">Nuestros valores</div>
+<div><b>01</b><h3 class="i18n" data-en="Operational excellence" data-es="Excelencia operativa">Excelencia operativa</h3><p class="i18n" data-en="Competitions run to international standards." data-es="Competencias operadas con estándares internacionales.">Competencias operadas con estándares internacionales.</p></div>
+<div><b>02</b><h3 class="i18n" data-en="Technology with purpose" data-es="Tecnología con propósito">Tecnología con propósito</h3><p class="i18n" data-en="Technology as a competitive edge, not a novelty." data-es="La tecnología como ventaja competitiva, no como novedad.">La tecnología como ventaja competitiva, no como novedad.</p></div>
+<div><b>03</b><h3 class="i18n" data-en="Player first" data-es="El jugador primero">El jugador primero</h3><p class="i18n" data-en="Experiences designed around the athlete." data-es="Experiencias pensadas desde la perspectiva del atleta.">Experiencias pensadas desde la perspectiva del atleta.</p></div>
+<div><b>04</b><h3 class="i18n" data-en="Data-driven decisions" data-es="Decisiones con datos">Decisiones con datos</h3><p class="i18n" data-en="Transparent decisions grounded in information." data-es="Decisiones transparentes, sustentadas en información.">Decisiones transparentes, sustentadas en información.</p></div></div></div></section>
+<section class="section founder-section" id="fundador"><div class="container founder-grid">
+<div class="founder-portrait reveal from-left"><div class="founder-photo"><span aria-hidden="true" class="founder-initials">JV</span><img alt="Joel Vega en la mesa técnica de una competencia de tenis de mesa" class="founder-img" loading="lazy" onerror="this.remove()" src="assets/fotografias/joel-vega.jpg"/></div>
+<div class="founder-id"><strong>Joel Vega</strong><span class="i18n" data-en="Founder and Technical Director" data-es="Fundador y Director Técnico">Fundador y Director Técnico</span></div></div>
+<div class="founder-copy reveal from-right"><div class="eyebrow"><span class="i18n" data-en="THE FOUNDER" data-es="EL FUNDADOR">EL FUNDADOR</span></div>
+<h2 class="i18n section-heading section-heading-tight" data-en="Experience at the table and beyond it." data-es="Experiencia en la mesa y fuera de ella.">Experiencia en la mesa y fuera de ella.</h2>
+<p class="i18n intro" data-en="Joel Vega brings more than 15 years in table tennis. Since 2026, he has served as Technical Director of the Puerto Rico Table Tennis Federation (FPTM) and of the Intercollegiate Athletic League (LAI) table tennis program." data-es="Joel Vega suma más de 15 años en el tenis de mesa. Desde 2026 es Director Técnico de la Federación Puertorriqueña de Tenis de Mesa (FPTM) y del programa de tenis de mesa de la Liga Atlética Interuniversitaria (LAI).">Joel Vega suma más de 15 años en el tenis de mesa. Desde 2026 es Director Técnico de la Federación Puertorriqueña de Tenis de Mesa (FPTM) y del programa de tenis de mesa de la Liga Atlética Interuniversitaria (LAI).</p>
+<p class="i18n intro" data-en="Professionally, he is an executive recruiter with an MBA and more than 8 years of experience in people operations, from startups to Fortune 500 companies. He is currently pursuing a PhD in Strategic and Innovative Management." data-es="En lo profesional, es reclutador ejecutivo, con un MBA y más de 8 años de experiencia en operaciones de personal, desde startups hasta empresas Fortune 500. Actualmente cursa un Ph.D. en Gerencia Estratégica e Innovadora.">En lo profesional, es reclutador ejecutivo, con un MBA y más de 8 años de experiencia en operaciones de personal, desde startups hasta empresas Fortune 500. Actualmente cursa un Ph.D. en Gerencia Estratégica e Innovadora.</p>
+<ul class="founder-badges"><li class="i18n" data-en="FPTM Technical Director" data-es="Director Técnico FPTM">Director Técnico FPTM</li><li class="i18n" data-en="LAI Technical Director" data-es="Director Técnico LAI">Director Técnico LAI</li><li>MBA</li><li class="i18n" data-en="PhD in progress · Strategic and Innovative Management" data-es="Ph.D. en curso · Gerencia Estratégica e Innovadora">Ph.D. en curso · Gerencia Estratégica e Innovadora</li><li class="i18n" data-en="Executive Recruiter" data-es="Reclutador ejecutivo">Reclutador ejecutivo</li><li class="i18n" data-en="15+ years in table tennis" data-es="15+ años en el tenis de mesa">15+ años en el tenis de mesa</li></ul></div></div></section>
+<section class="horizontal-callout"><div class="container callout-inner"><div class="reveal">
+<div class="eyebrow"><span class="i18n" data-en="NEXT" data-es="SIGUIENTE">SIGUIENTE</span></div><h2 class="i18n" data-en="See how a competition moves from planning to execution." data-es="Conoce cómo se lleva una competencia de la planificación a la ejecución.">Conoce cómo se lleva una competencia de la planificación a la ejecución.</h2>
+<p class="i18n" data-en="Explore another part of the ecosystem behind TTMPR." data-es="Conoce otra parte del ecosistema que impulsa TTMPR.">Conoce otra parte del ecosistema que impulsa TTMPR.</p></div>
+<div><a class="button primary" href="federacion/"><span class="i18n" data-en="Keep exploring" data-es="Continuar explorando">Continuar explorando</span> <span aria-hidden="true" class="arrow">↗</span></a></div></div></section></main>
+ <footer class="site-footer" id="contacto"><div class="container">
+  <div class="footer-main"><div><img src="assets/ttmpr-logo.png" alt="TTMPR" loading="lazy" width="165" height="51"><span class="footer-fullname">Tournaments &amp; Technology Management ·&nbsp;Puerto&nbsp;Rico</span>
+   <p class="i18n " data-es="Digitalización, gestión deportiva y dirección técnica al servicio del tenis de mesa en Puerto Rico." data-en="Digital systems, sports operations, and technical direction for table tennis in Puerto Rico.">Digitalización, gestión deportiva y dirección técnica al servicio del tenis de mesa en Puerto Rico.</p>
+   <span class="tiny muted"><span class="i18n " data-es="Una iniciativa fundada y dirigida por Joel Vega." data-en="An initiative founded and led by Joel Vega.">Una iniciativa fundada y dirigida por Joel Vega.</span></span>
+   <div class="contact-details" aria-label="Contacto TTMPR">
+    <strong class="i18n" data-es="Contacto" data-en="Contact">Contacto</strong>
+    <a href="mailto:joel@ttmpr.xyz" aria-label="Enviar correo a joel@ttmpr.xyz">joel@ttmpr.xyz</a>
+    <a href="tel:+17872483994" aria-label="Llamar al 787-248-3994">787-248-3994</a>
+   </div></div>
+  <div><div class="footer-title"><span class="i18n " data-es="Explora" data-en="Explore">Explora</span></div><div class="footer-links"><a href="federacion/"><span class="i18n " data-es="Federación" data-en="Federation">Federación</span></a><a href="digitalizacion/"><span class="i18n " data-es="Digitalización" data-en="Digital systems">Digitalización</span></a><a href="lai/"><span class="i18n " data-es="LAI" data-en="LAI">LAI</span></a><a href="kileaaa/"><span class="i18n " data-es="Kileaaa" data-en="Kileaaa">Kileaaa</span></a><a href="futuro/"><span class="i18n " data-es="Futuro" data-en="Future">Futuro</span></a></div></div>
+  <div><div class="footer-title"><span class="i18n " data-es="Referencias" data-en="References">Referencias</span></div><div class="footer-links">
+    <a href="https://fptm.pr/" target="_blank" rel="noopener noreferrer"><span class="i18n " data-es="Sitio oficial FPTM" data-en="Official FPTM website">Sitio oficial FPTM</span> ↗</a>
+    <a href="https://ratings.ttmpr.xyz/" target="_blank" rel="noopener noreferrer">Ratings TTMPR ↗</a>
+    <a href="https://www.stadiumtt.com/" target="_blank" rel="noopener noreferrer">StadiumTT ↗</a>
+    <span class="muted tiny"><span class="i18n " data-es="Para consultas o colaboraciones, utiliza los datos de contacto al lado del logo de TTMPR." data-en="For inquiries or collaborations, use the contact details next to the TTMPR logo.">Para consultas o colaboraciones, utiliza los datos de contacto al lado del logo de TTMPR.</span></span>
+   </div></div></div>
+  <div class="footer-bottom"><span>© 2026 TTMPR · <span class="i18n " data-es="Más allá del juego." data-en="Beyond the game.">Más allá del juego.</span></span><span><span class="i18n " data-es="Fundador y director" data-en="Founder and director">Fundador y director</span>: <strong>Joel Vega</strong></span></div>
+ </div></footer>
+ <button class="float-inquiry" type="button" data-drawer-title-es="Colaboraciones y contacto" data-drawer-title-en="Collaborations and contact"
+ data-drawer-text-es="¿Quieres conversar sobre digitalización, dirección técnica o proyectos deportivos? Puedes escribir o llamar directamente. Este sitio es informativo y no envía formularios ni recopila datos."
+ data-drawer-text-en="Interested in sports digitization, technical direction, or collaboration? You can email or call directly. This is an informational website without forms or data collection.">
+ <span aria-hidden="true">✳</span><span class="i18n " data-es="Conversemos" data-en="Get in touch">Conversemos</span></button><div class="drawer-overlay" id="drawerOverlay" aria-hidden="true"><aside class="drawer" role="dialog" aria-modal="true" aria-labelledby="drawerTitle">
+  <button class="drawer-close" type="button" id="drawerClose" aria-label="Cerrar">×</button>
+  <span class="eyebrow">TTMPR / <span class="i18n " data-es="Información" data-en="Information">Información</span></span>
+  <h2 class="i18n " data-es="TTMPR" data-en="TTMPR" id="drawerTitle">TTMPR</h2>
+  <p class="i18n " data-es="Conoce nuestro trabajo." data-en="Explore our work." id="drawerDescription">Conoce nuestro trabajo.</p>
+  <div class="contact-actions" aria-label="Opciones de contacto">
+    <a class="contact-action" href="mailto:joel@ttmpr.xyz"><span class="contact-action-icon" aria-hidden="true">✉</span><span><small class="i18n" data-es="Correo electrónico" data-en="Email">Correo electrónico</small><strong>joel@ttmpr.xyz</strong></span><span aria-hidden="true">↗</span></a>
+    <a class="contact-action" href="tel:+17872483994"><span class="contact-action-icon" aria-hidden="true">☎</span><span><small class="i18n" data-es="Teléfono" data-en="Phone">Teléfono</small><strong>787-248-3994</strong></span><span aria-hidden="true">↗</span></a>
+   </div>
+  <a href="#" id="drawerLink" class="button primary" hidden><span class="i18n " data-es="Explorar sección" data-en="Explore section">Explorar sección</span></a>
+ </aside></div><script defer src="assets/site.js"></script></body></html>

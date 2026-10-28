@@ -1,0 +1,66 @@
+[
+  {
+    "id": "catolica",
+    "nombre": "Católica",
+    "url_origen": "https://qdxwswagojiecfqfnssg.supabase.co/storage/v1/object/public/event-media/universidades/1791169719260-wpmhzw.png",
+    "archivo_local": "assets/universidades/catolica.png",
+    "formato": "png",
+    "nota": "Archivo local proporcionado por Joel Vega el 28 de octubre de 2026; recortado y reducido a 160×160 px para web."
+  },
+  {
+    "id": "interamericana",
+    "nombre": "Interamericana",
+    "url_origen": "https://qdxwswagojiecfqfnssg.supabase.co/storage/v1/object/public/event-media/universidades/1791166768809-iao5ca.jpg",
+    "archivo_local": "assets/universidades/interamericana.png",
+    "formato": "png",
+    "nota": "Archivo local proporcionado por Joel Vega el 28 de octubre de 2026; recortado y reducido a 160×160 px para web."
+  },
+  {
+    "id": "politecnica",
+    "nombre": "Politécnica",
+    "url_origen": "https://qdxwswagojiecfqfnssg.supabase.co/storage/v1/object/public/event-media/universidades/1791169950397-oa447c.png",
+    "archivo_local": "assets/universidades/politecnica.png",
+    "formato": "png",
+    "nota": "Archivo local proporcionado por Joel Vega el 28 de octubre de 2026; recortado y reducido a 160×160 px para web."
+  },
+  {
+    "id": "uagm",
+    "nombre": "UAGM",
+    "url_origen": "https://qdxwswagojiecfqfnssg.supabase.co/storage/v1/object/public/event-media/universidades/1791166790883-8vg8jl.jpg",
+    "archivo_local": "assets/universidades/uagm.png",
+    "formato": "png",
+    "nota": "Archivo local proporcionado por Joel Vega el 28 de octubre de 2026; recortado y reducido a 160×160 px para web."
+  },
+  {
+    "id": "upr-arecibo",
+    "nombre": "UPR Arecibo",
+    "url_origen": "https://qdxwswagojiecfqfnssg.supabase.co/storage/v1/object/public/event-media/universidades/1791166811825-5e5k1q.jpg",
+    "archivo_local": "assets/universidades/upr-arecibo.png",
+    "formato": "png",
+    "nota": "Archivo local proporcionado por Joel Vega el 28 de octubre de 2026; recortado y reducido a 160×160 px para web."
+  },
+  {
+    "id": "upr-cayey",
+    "nombre": "UPR Cayey",
+    "url_origen": "https://qdxwswagojiecfqfnssg.supabase.co/storage/v1/object/public/event-media/universidades/1791166953611-iopyly.png",
+    "archivo_local": "assets/universidades/upr-cayey.png",
+    "formato": "png",
+    "nota": "Archivo local proporcionado por Joel Vega el 28 de octubre de 2026; recortado y reducido a 160×160 px para web."
+  },
+  {
+    "id": "upr-mayaguez",
+    "nombre": "UPR Mayagüez",
+    "url_origen": "https://qdxwswagojiecfqfnssg.supabase.co/storage/v1/object/public/event-media/universidades/1791166823996-utbpz9.jpg",
+    "archivo_local": "assets/universidades/upr-mayaguez.png",
+    "formato": "png",
+    "nota": "Archivo local proporcionado por Joel Vega el 28 de octubre de 2026; recortado y reducido a 160×160 px para web."
+  },
+  {
+    "id": "upr-rio-piedras",
+    "nombre": "UPR Río Piedras",
+    "url_origen": "https://qdxwswagojiecfqfnssg.supabase.co/storage/v1/object/public/event-media/universidades/1791166835132-i2p3mu.png",
+    "archivo_local": "assets/universidades/upr-rio-piedras.png",
+    "formato": "png",
+    "nota": "Archivo local proporcionado por Joel Vega el 28 de octubre de 2026; recortado y reducido a 160×160 px para web."
+  }
+]
