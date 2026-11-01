@@ -467,3 +467,14 @@ html:has(.lai-tabs){scroll-padding-top:170px}
 .hero-rally{display:block;width:100%;max-width:620px;height:auto}
 .hero-rally-col .hero-photo-caption{margin-top:-18px;align-self:flex-end}
 @media(max-width:860px){.hero-rally-col{align-items:stretch;margin-top:8px}.hero-rally{max-width:520px;margin:0 auto}.hero-rally-col .hero-photo-caption{margin-top:4px;align-self:flex-start}}
+
+/* ===== TTMPR 2.9.5 — Artículo más reciente destacado ===== */
+.lai-article-latest{grid-column:1/-1;min-height:0;padding:32px 34px 26px;border-color:#bfe3f1;box-shadow:0 22px 44px -32px rgba(22,127,171,.5)}
+.lai-article-latest h3{font-size:clamp(22px,2.5vw,31px);line-height:1.22;max-width:32em}
+.lai-article-latest p{font-size:14px;line-height:1.6;max-width:46em;margin-top:10px}
+.lai-article-latest p{margin-bottom:28px}
+.lai-article-date .lai-article-new{display:inline-block;margin-left:10px;padding:3px 9px;border-radius:999px;background:#e2f5fc;color:#167fab;font-size:9.5px;letter-spacing:.12em}
+.lai-article-date .lai-article-new span{color:inherit;margin:0}
+@media(max-width:640px){.lai-article-latest{padding:27px 22px 22px}.lai-article-latest h3{font-size:22px}}
+.lai-article-latest a{justify-content:space-between}
+@media(max-width:900px) and (min-width:631px){.lai-article-latest{grid-column:auto;padding:27px 25px 23px}.lai-article-latest h3{font-size:22px}.lai-article-latest p{font-size:13px}}
