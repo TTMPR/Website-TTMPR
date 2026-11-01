@@ -243,6 +243,11 @@
     if (!assets) return;
     scope.querySelectorAll('img[data-asset]').forEach(img => { const v = assets[img.dataset.asset]; if (v) img.src = v; });
   }
+  // Home topspin animation: freeze on a finished rally when the visitor prefers reduced motion.
+  function settleRally(scope){
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    scope.querySelectorAll('svg.hero-rally').forEach(svg => { try { svg.pauseAnimations(); svg.setCurrentTime(1.95); } catch (_) { /* SMIL not supported */ } });
+  }
   function markActive(key){
     document.querySelectorAll('[data-route-key]').forEach(link => {
       if(link.dataset.routeKey===key)link.setAttribute('aria-current','page');
@@ -263,6 +268,7 @@
     if(!content || !template)return;
     content.replaceChildren(template.content.cloneNode(true));
     hydrateAssets(content);
+    settleRally(content);
     body.dataset.page=key;
     markActive(key);
     applyLanguage(lang);
@@ -281,5 +287,5 @@
     window.addEventListener('hashchange',() => { if(!location.hash || location.hash.startsWith('#/')) routeSingle(); });
     routeSingle();
   }
-  else{ markActive(currentRoute());applyLanguage(lang);initReveals();initLaiTabs();onScroll(); window.addEventListener('hashchange', initLaiTabs); }
+  else{ markActive(currentRoute());applyLanguage(lang);initReveals();initLaiTabs();settleRally(document);onScroll(); window.addEventListener('hashchange', initLaiTabs); }
 })();

@@ -458,3 +458,12 @@ html:has(.lai-tabs){scroll-padding-top:170px}
  body[data-page="lai"] .page-hero-grid>div:last-child{display:none}
  .lai-tablist{-webkit-mask-image:linear-gradient(90deg,#000 85%,transparent);mask-image:linear-gradient(90deg,#000 85%,transparent);padding-right:28px}
 }
+
+
+/* ===== TTMPR 2.9.4 — Portada de Inicio sin foto: animación de topspin ===== */
+.photo-hero.rally-hero{background:radial-gradient(ellipse 45% 64% at 90% 20%,rgba(22,70,112,.31),transparent 80%),radial-gradient(ellipse 44% 60% at 30% 120%,rgba(60,37,124,.21),transparent 90%),#080e18}
+.photo-hero.rally-hero:before{opacity:.35}
+.hero-rally-col{display:flex;flex-direction:column;align-items:flex-end;align-self:center;min-width:0}
+.hero-rally{display:block;width:100%;max-width:620px;height:auto}
+.hero-rally-col .hero-photo-caption{margin-top:-18px;align-self:flex-end}
+@media(max-width:860px){.hero-rally-col{align-items:stretch;margin-top:8px}.hero-rally{max-width:520px;margin:0 auto}.hero-rally-col .hero-photo-caption{margin-top:4px;align-self:flex-start}}
