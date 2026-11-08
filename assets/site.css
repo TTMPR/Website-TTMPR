@@ -486,3 +486,91 @@ html:has(.lai-tabs){scroll-padding-top:170px}
 #calendario-lai .lai-champions-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
 #calendario-lai .lai-champions header h3{color:#f2f8fd}
 @media(max-width:760px){#calendario-lai .lai-champions-grid{grid-template-columns:1fr}}
+
+/* ===== TTMPR 2.9.8 — Fases desplegables: fase → encuentro → partidos ===== */
+.lai-phase-list{margin-top:34px;display:flex;flex-direction:column;gap:14px}
+.lai-phase-item{border:1px solid var(--edge);border-radius:18px;background:linear-gradient(180deg,#0f1c2d,#0c1726);overflow:hidden;scroll-margin-top:calc(var(--site-header-h,80px) + 70px)}
+.lai-phase-item[open]{border-color:rgba(77,214,255,.3)}
+.lai-phase-item>summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:52px minmax(0,1.15fr) minmax(0,1.7fr) auto 30px;align-items:center;gap:18px;padding:20px 24px}
+.lai-phase-item>summary::-webkit-details-marker,.lai-match>summary::-webkit-details-marker{display:none}
+.lai-phase-item>summary:hover{background:#ffffff05}
+.lai-phase-num{font:800 26px 'Sora',sans-serif;color:#2c4660;letter-spacing:-.03em}
+.lai-phase-item[open] .lai-phase-num{color:var(--blue)}
+.lai-phase-main{display:flex;flex-direction:column;gap:3px;min-width:0}
+.lai-phase-main strong{font:800 20px 'Sora',sans-serif;letter-spacing:-.03em;color:#f2f8fd}
+.lai-phase-state{font-size:10px;letter-spacing:.16em;text-transform:uppercase;font-weight:800;color:var(--teal)}
+.lai-phase-item.next .lai-phase-state{color:var(--blue)}
+.lai-phase-item.upcoming .lai-phase-state{color:#6f93ad}
+.lai-phase-when{font-size:12.5px;color:var(--muted)}
+.lai-phase-chips{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;min-width:0}
+.lai-phase-chips>small{font-size:10px;letter-spacing:.14em;text-transform:uppercase;font-weight:800;color:#6f93ad;margin-right:2px}
+.lai-chip{display:inline-flex;align-items:center;gap:6px;padding:4px 10px 4px 5px;border-radius:999px;background:#132438;border:1px solid #ffffff10;font-size:12px;color:#d7e8f5;white-space:nowrap}
+.lai-chip em{font-style:normal;font-weight:800;font-size:10px;color:var(--blue);padding-left:3px}
+.lai-chip img{width:18px;height:18px;border-radius:50%;background:#fff;object-fit:contain}
+.lai-chip b{font:700 12px 'Sora',sans-serif;color:#fff}
+.lai-phase-count{font-size:12px;color:var(--muted);white-space:nowrap}
+.lai-chev{width:28px;height:28px;border-radius:50%;border:1px solid var(--edge);display:grid;place-items:center;justify-self:end}
+.lai-chev:before{content:'';width:7px;height:7px;border-right:2px solid var(--blue);border-bottom:2px solid var(--blue);transform:translateY(-2px) rotate(45deg);transition:transform .2s}
+details[open]>summary>.lai-chev:before{transform:translateY(2px) rotate(-135deg)}
+.lai-phase-body{padding:6px 24px 26px;border-top:1px solid var(--edge)}
+.lai-series{margin-top:18px;border:1px solid #ffffff12;border-radius:14px;background:#0a1421;padding:10px 12px}
+.lai-series-head{display:flex;align-items:center;flex-wrap:wrap;gap:10px 12px;padding:6px 6px 10px;border-bottom:1px solid #ffffff0d}
+.lai-series-head>small{font-size:10px;letter-spacing:.14em;text-transform:uppercase;font-weight:800;color:#9fb8cc}
+.lai-series-teams{display:flex;align-items:center;flex-wrap:wrap;gap:8px 12px;font-size:15px;font-weight:700;color:#eef7ff}
+.lai-series-teams b{font:800 18px 'Sora',sans-serif;color:var(--blue);font-variant-numeric:tabular-nums}
+.lai-series-note{margin-left:auto;font-size:10.5px;color:#6f93ad;letter-spacing:.12em;text-transform:uppercase;font-weight:800}
+.lai-match-tag{display:inline-grid;place-items:center;min-width:30px;height:24px;padding:0 7px;border-radius:7px;background:#16304a;color:#cfeaff;font:800 11px 'Sora',sans-serif}
+.lai-match-tag.br{background:#1b2a3e;color:var(--blue)}
+.lai-match{border-top:1px solid #ffffff0b}
+.lai-series-head+.lai-match{border-top:0}
+.lai-match>summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:auto 128px minmax(0,1fr) 28px;align-items:center;gap:12px;padding:11px 6px;border-radius:10px}
+.lai-match>summary:hover{background:#ffffff07}
+.lai-match>summary .lai-chev{width:24px;height:24px}
+.lai-match-when{font-size:12px;color:var(--muted);white-space:nowrap}
+.lai-match-score{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:12px;min-width:0}
+.lai-match-score .t{display:flex;align-items:center;gap:8px;min-width:0;color:#93a9bd;font-size:14px}
+.lai-match-score .t span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lai-match-score .t.r{justify-content:flex-end;text-align:right}
+.lai-match-score .t.w{color:#fff;font-weight:700}
+.lai-match-score img{width:22px;height:22px;border-radius:50%;background:#fff;object-fit:contain;flex:none}
+.lai-match-score>b{font:800 16px 'Sora',sans-serif;color:#fff;font-variant-numeric:tabular-nums}
+.lai-match-body{padding:2px 4px 14px}
+.lai-singles-head,.lai-singles li{display:grid;grid-template-columns:26px minmax(0,1fr) 62px minmax(0,1fr);column-gap:10px}
+.lai-singles-head{padding:8px 12px 6px;font-size:10px;letter-spacing:.12em;text-transform:uppercase;font-weight:800;color:#6f93ad}
+.lai-singles-head span:nth-child(3){text-align:center}
+.lai-singles-head span:nth-child(4){text-align:right}
+.lai-singles{list-style:none;margin:0;padding:0;border-radius:10px;overflow:hidden;border:1px solid #ffffff10}
+.lai-singles li{grid-template-areas:"n p1 s p2" ". pts pts pts";row-gap:3px;align-items:center;padding:10px 12px;background:#0d1a29;border-top:1px solid #ffffff0a;font-size:13.5px}
+.lai-singles li:first-child{border-top:0}
+.lai-singles .n{grid-area:n;color:#5f7d96;font:700 12px 'Sora',sans-serif}
+.lai-singles .p{grid-area:p1;color:#8fa6ba;min-width:0}
+.lai-singles .p.r{grid-area:p2;text-align:right}
+.lai-singles .p.w{color:#fff;font-weight:700}
+.lai-singles .p i{font-style:normal;font-size:9.5px;font-weight:800;color:#6f8aa3;margin:0 7px;border:1px solid #ffffff1c;border-radius:4px;padding:0 4px;vertical-align:1px}
+.lai-singles .s{grid-area:s;text-align:center;font:700 15px 'Sora',sans-serif;color:#5f7890}
+.lai-singles .s b{font-weight:700}
+.lai-singles .s b.w{color:var(--blue)}
+.lai-singles .pts{grid-area:pts;text-align:center;font-size:11.5px;color:#7f99b0;font-variant-numeric:tabular-nums;word-spacing:1px}
+.lai-singles .pts small{font-size:9px;letter-spacing:.14em;text-transform:uppercase;font-weight:800;color:#56718a;margin-right:7px}
+.lai-day-block{margin-top:22px}
+.lai-day-block h4{font:800 12px 'DM Sans',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#9fc6df;margin:0 0 4px}
+.lai-day-block .lai-match{border:1px solid #ffffff0f;border-radius:12px;background:#0a1421;margin-top:8px;padding:0 6px}
+.lai-phase-body>.lai-card-link{display:inline-block;margin-top:18px}
+.lai-phase-cron{margin-top:20px}
+.lai-phase-empty{color:var(--muted);margin-top:16px}
+@media(max-width:900px){.lai-phase-item>summary{grid-template-columns:44px minmax(0,1fr) 30px;grid-template-areas:"num main chev" ". chips chips";row-gap:12px;padding:18px}
+ .lai-phase-num{grid-area:num}.lai-phase-main{grid-area:main}.lai-phase-item>summary>.lai-chev{grid-area:chev}.lai-phase-chips{grid-area:chips}.lai-phase-count{display:none}
+ .lai-phase-body{padding:4px 14px 20px}}
+@media(max-width:640px){.lai-match>summary{grid-template-columns:auto minmax(0,1fr) 24px;grid-template-areas:"tag score chev" "tag when chev";row-gap:2px}
+ .lai-match>summary>.lai-match-tag{grid-area:tag}.lai-match>summary>.lai-match-when{grid-area:when;font-size:11px}.lai-match>summary>.lai-match-score{grid-area:score}.lai-match>summary>.lai-chev{grid-area:chev}
+ .lai-match-score{gap:8px}.lai-match-score .t{font-size:13px;gap:6px}.lai-match-score img{width:18px;height:18px}
+ .lai-singles-head,.lai-singles li{grid-template-columns:20px minmax(0,1fr) 50px minmax(0,1fr);column-gap:7px}
+ .lai-singles li{font-size:12.5px;padding:9px 9px}.lai-singles .p i{display:none}
+ .lai-series{padding:8px}.lai-series-teams{font-size:14px}.lai-series-note{display:none}}
+.lai-match-score{max-width:660px}
+.lai-match-body{max-width:900px}
+.lai-match-score .ab{display:none}
+.lai-branch-group{margin-top:10px}
+.lai-branch-group h5{font:800 10.5px 'DM Sans',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#6f93ad;margin:12px 0 0}
+.lai-day-block h4{font-size:13px;color:#dff3ff;padding-bottom:6px;border-bottom:1px solid var(--edge)}
+@media(max-width:640px){.lai-match-score .nm{display:none}.lai-match-score .ab{display:inline}}

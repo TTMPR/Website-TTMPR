@@ -133,7 +133,7 @@
     if (el && !el.classList.contains('lai-panel')) { target = el; key = el.closest('.lai-panel')?.id || ''; }
     const isPanel = key && document.getElementById(key)?.classList.contains('lai-panel');
     activateTab(isPanel ? key : 'resumen');
-    if (target) requestAnimationFrame(() => target.scrollIntoView({block:'start'}));
+    if (target) { if (target.matches('details')) target.open = true; requestAnimationFrame(() => target.scrollIntoView({block:'start'})); }
     else if (isPanel && key !== 'resumen') requestAnimationFrame(() => scrollToPanels(true));
   }
   document.addEventListener('click', event => {
@@ -149,7 +149,7 @@
     event.preventDefault();
     activateTab(panel.id, {updateUrl:true});
     if (target === panel) scrollToPanels();
-    else requestAnimationFrame(() => target.scrollIntoView({behavior:'smooth', block:'start'}));
+    else { if (target.matches('details')) target.open = true; requestAnimationFrame(() => target.scrollIntoView({behavior:'smooth', block:'start'})); }
   });
   document.addEventListener('keydown', event => {
     const tab = event.target.closest?.('#laiTabs [role="tab"]');
