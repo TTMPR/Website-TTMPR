@@ -478,3 +478,11 @@ html:has(.lai-tabs){scroll-padding-top:170px}
 @media(max-width:640px){.lai-article-latest{padding:27px 22px 22px}.lai-article-latest h3{font-size:22px}}
 .lai-article-latest a{justify-content:space-between}
 @media(max-width:900px) and (min-width:631px){.lai-article-latest{grid-column:auto;padding:27px 25px 23px}.lai-article-latest h3{font-size:22px}.lai-article-latest p{font-size:13px}}
+
+/* ===== TTMPR 2.9.7 — Artículo destacado en dos columnas ===== */
+.lai-article-latest{grid-column:span 2}
+@media(max-width:900px) and (min-width:631px){.lai-article-latest{grid-column:1/-1}}
+@media(max-width:630px){.lai-article-latest{grid-column:auto}}
+#calendario-lai .lai-champions-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+#calendario-lai .lai-champions header h3{color:#f2f8fd}
+@media(max-width:760px){#calendario-lai .lai-champions-grid{grid-template-columns:1fr}}
